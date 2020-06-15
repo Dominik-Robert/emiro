@@ -41,9 +41,11 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		emiroHost := viper.GetString("emiroHost")
 		emiroPort := viper.GetInt("emiroPort")
+		verbose, _ := rootCmd.Flags().GetBool("verbose")
 
 		var conn *grpc.ClientConn
 
@@ -68,10 +70,16 @@ to quickly create a Cobra application.`,
 		}
 
 		parameter, _ := cmd.Flags().GetStringArray("param")
-
 		for _, value := range parameter {
 			key, value := splitKeyValue(value)
 			response.Command = strings.ReplaceAll(response.Command, key, value)
+		}
+		for key, value := range response.Params {
+			response.Command = strings.ReplaceAll(response.Command, key, value)
+		}
+
+		if verbose {
+			log.Println("Running Command: ", response.Command)
 		}
 
 		if !response.Script {

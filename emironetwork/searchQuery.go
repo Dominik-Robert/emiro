@@ -35,7 +35,6 @@ func searchSpecificWithElastic(host string, port int, index string, insecure boo
 
 	var answer *Answer
 	jsonData := gjson.ParseBytes(response).Get("hits.hits").Array()
-
 	for _, value := range jsonData {
 		answer = &Answer{
 			Name:        value.Get("_source.name").String(),
@@ -46,9 +45,19 @@ func searchSpecificWithElastic(host string, port int, index string, insecure boo
 			Os:          parseStringArray(value.Get("_source.os")),
 			Path:        value.Get("_source.path").String(),
 			Interactive: value.Get("_source.interactive").Bool(),
+			Params:      parseMap(value.Get("_source.params")),
 		}
 	}
 	return answer, nil
+}
+
+func parseMap(result gjson.Result) map[string]string {
+	returnValue := make(map[string]string)
+
+	for key, value := range result.Map() {
+		returnValue[key] = value.String()
+	}
+	return returnValue
 }
 
 func parseStringArray(result gjson.Result) []string {

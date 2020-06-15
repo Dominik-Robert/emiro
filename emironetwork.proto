@@ -21,6 +21,7 @@ message Answer {
   bool script = 6;
   bool interactive = 7;
   repeated string os = 8;
+  map<string, string> params = 9;
 }
 
 message ResponseQueryAnswer {
