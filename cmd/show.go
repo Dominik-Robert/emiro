@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -42,6 +43,7 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		emiroHost := viper.GetString("emiroHost")
 		emiroPort := viper.GetInt("emiroPort")
+		plain, _ := cmd.Flags().GetBool("plain")
 
 		var conn *grpc.ClientConn
 
@@ -63,6 +65,12 @@ to quickly create a Cobra application.`,
 
 		if err != nil {
 			log.Fatalf("Error when calling SendQuery: %s", err)
+		}
+
+		if plain {
+			result, _ := json.Marshal(response)
+			fmt.Println(string(result))
+			return
 		}
 
 		writer := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
@@ -89,5 +97,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// showCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	showCmd.Flags().BoolP("plain", "p", false, "Shows the result in plain json")
+
 }
