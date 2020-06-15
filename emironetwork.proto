@@ -1,0 +1,44 @@
+syntax = "proto3";
+package emironetwork;
+
+message Query {
+  string query = 1;
+  int32 count = 2;
+  bool all = 3;
+}
+
+message QueryFull {
+  bytes data = 1;
+}
+
+message QueryAnswer {
+  string name = 1;
+  string description = 2;
+  string language = 3;
+}
+
+message Answer {
+  string name = 1;
+  string description = 2;
+  string command = 3;
+  string language = 4;
+  string path = 5;
+  bool script = 6;
+  bool interactive = 7;
+  repeated string os = 8;
+}
+
+message ResponseQueryAnswer {
+  repeated QueryAnswer queryAnswers  = 1;
+}
+
+message Response {
+  bool succeed = 1;
+}
+
+service Emiro {
+  rpc sendQuery(Query) returns (ResponseQueryAnswer) {}
+  rpc sendShow(Query) returns (Answer) {}
+  rpc sendExec(Query) returns (Answer) {}
+  rpc sendNew(QueryFull) returns (Response) {}
+}

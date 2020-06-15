@@ -14,7 +14,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func searchSpecificWithElastic(host string, port int, index string, insecure bool, query string, count int32, all bool) *Answer {
+func searchSpecificWithElastic(host string, port int, index string, insecure bool, query string, count int32, all bool) (*Answer, error) {
 	elkQuery := `
 	{
 		"size": ` + fmt.Sprint(count) + `,
@@ -30,15 +30,11 @@ func searchSpecificWithElastic(host string, port int, index string, insecure boo
 	response, err := DoCurl(host, port, "GET", index, "/_search", insecure, body)
 
 	if err != nil {
-		log.Fatal(err)
+		return nil, errors.New("error at http Request:" + err.Error())
 	}
 
 	var answer *Answer
 	jsonData := gjson.ParseBytes(response).Get("hits.hits").Array()
-
-	if len(jsonData) > 1 {
-		log.Fatalf("More than one result")
-	}
 
 	for _, value := range jsonData {
 		answer = &Answer{
@@ -51,7 +47,7 @@ func searchSpecificWithElastic(host string, port int, index string, insecure boo
 			Path:        value.Get("_source.path").String(),
 		}
 	}
-	return answer
+	return answer, nil
 }
 
 func parseStringArray(result gjson.Result) []string {
@@ -63,7 +59,7 @@ func parseStringArray(result gjson.Result) []string {
 	return returnValue
 }
 
-func searchQueryWithElastic(host string, port int, index string, insecure bool, query string, count int32, all bool) []*QueryAnswer {
+func searchQueryWithElastic(host string, port int, index string, insecure bool, query string, count int32, all bool) ([]*QueryAnswer, error) {
 	elkQuery := `
 	{
 		"size": ` + fmt.Sprint(count) + `,
@@ -90,7 +86,7 @@ func searchQueryWithElastic(host string, port int, index string, insecure bool, 
 	response, err := DoCurl(host, port, "GET", index, "/_search", insecure, body)
 
 	if err != nil {
-		log.Fatal(err)
+		return nil, errors.New("error at http Request:" + err.Error())
 	}
 
 	var answer []*QueryAnswer
@@ -104,14 +100,34 @@ func searchQueryWithElastic(host string, port int, index string, insecure bool, 
 		answer = append(answer, entry)
 	}
 
-	return answer
+	return answer, nil
+}
+
+func createNewWithElastic(host string, port int, index string, insecure bool, query []byte) (bool, error) {
+	elkQuery := string(query)
+
+	body := bytes.NewBufferString(elkQuery)
+	response, err := DoCurl(host, port, "POST", index, "/_doc", insecure, body)
+
+	if err != nil {
+		return false, errors.New("error at http Request:" + err.Error())
+	}
+
+	if gjson.ParseBytes(response).Get("result").String() == "created" {
+		return true, nil
+	} else {
+		log.Println(gjson.ParseBytes(response).Get("result").String())
+		return false, nil
+	}
+
 }
 
 func DoCurl(host string, port int, method string, index string, additionalURL string, insecure bool, query io.Reader) ([]byte, error) {
 	req, err := http.NewRequest(method, "http://"+host+":"+fmt.Sprint(port)+"/"+index+additionalURL, query)
 
 	if err != nil {
-		log.Fatalf("Unable to create request: %s", err)
+		log.Println("Unable to create Request:" + err.Error())
+		return nil, errors.New("Unable to create Request:" + err.Error())
 	}
 	req.Header.Add("content-type", "application/json")
 
@@ -120,7 +136,8 @@ func DoCurl(host string, port int, method string, index string, additionalURL st
 	res, err := http.DefaultClient.Do(req)
 
 	if err != nil {
-		log.Fatalf("Failed to send request: %s", err)
+		log.Println("Failed to send request:" + err.Error())
+		return nil, errors.New("Failed to send request:" + err.Error())
 	}
 
 	bodyData, _ := ioutil.ReadAll(res.Body)
