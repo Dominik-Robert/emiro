@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -77,13 +78,32 @@ to quickly create a Cobra application.`,
 			// Is no script. So execute it directly
 			cmd := exec.Command(response.Path, "-c", response.Command)
 
-			stdoutStdErr, err := cmd.CombinedOutput()
+			stdout, errOut := cmd.StdoutPipe()
+			stdErr, errErr := cmd.StderrPipe()
 
-			if err != nil {
-				log.Fatalf("Cannot execute command: %s", err)
+			if errOut != nil {
+				log.Fatalf("Cannot connect to commands stdOut: %s", err)
+			}
+			if errErr != nil {
+				log.Fatalf("Cannot connect to commands stdErr: %s", err)
 			}
 
-			fmt.Printf("%s\n", stdoutStdErr)
+			cmd.Start()
+
+			go func() {
+				scannerErr := bufio.NewScanner(stdErr)
+				for scannerErr.Scan() {
+					m := scannerErr.Text()
+					fmt.Println(m)
+				}
+			}()
+
+			scannerOut := bufio.NewScanner(stdout)
+			for scannerOut.Scan() {
+				m := scannerOut.Text()
+				fmt.Println(m)
+			}
+			cmd.Wait()
 
 		} else {
 			tempDir := viper.GetString("tempDir")
@@ -103,13 +123,32 @@ to quickly create a Cobra application.`,
 
 			cmd := exec.Command(file.Name())
 
-			stdoutStdErr, err := cmd.CombinedOutput()
+			stdout, errOut := cmd.StdoutPipe()
+			stdErr, errErr := cmd.StderrPipe()
 
-			if err != nil {
-				log.Fatalf("Cannot execute command: %s", err)
+			if errOut != nil {
+				log.Fatalf("Cannot connect to commands stdOut: %s", err)
+			}
+			if errErr != nil {
+				log.Fatalf("Cannot connect to commands stdErr: %s", err)
 			}
 
-			fmt.Printf("%s\n", stdoutStdErr)
+			cmd.Start()
+
+			go func() {
+				scannerErr := bufio.NewScanner(stdErr)
+				for scannerErr.Scan() {
+					m := scannerErr.Text()
+					fmt.Println(m)
+				}
+			}()
+
+			scannerOut := bufio.NewScanner(stdout)
+			for scannerOut.Scan() {
+				m := scannerOut.Text()
+				fmt.Println(m)
+			}
+			cmd.Wait()
 
 			os.Remove(file.Name())
 		}
