@@ -24,6 +24,7 @@ import (
 
 	"github.com/dominik-robert/emiro/emironetwork"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 )
 
@@ -39,9 +40,12 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		emiroHost := viper.GetString("emiroHost")
+		emiroPort := viper.GetInt("emiroPort")
+
 		var conn *grpc.ClientConn
 
-		conn, err := grpc.Dial(":9000", grpc.WithInsecure())
+		conn, err := grpc.Dial(emiroHost+":"+fmt.Sprint(emiroPort), grpc.WithInsecure())
 
 		if err != nil {
 			log.Fatalf("Could not connect to server: %s", err)

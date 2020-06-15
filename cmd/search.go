@@ -24,6 +24,7 @@ import (
 
 	"github.com/dominik-robert/emiro/emironetwork"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"google.golang.org/grpc"
 )
@@ -42,10 +43,12 @@ to quickly create a Cobra application.`,
 
 		all, _ := cmd.Flags().GetBool("all")
 		count, _ := cmd.Flags().GetInt32("count")
+		emiroHost := viper.GetString("emiroHost")
+		emiroPort := viper.GetInt("emiroPort")
 
 		var conn *grpc.ClientConn
 
-		conn, err := grpc.Dial(":9000", grpc.WithInsecure())
+		conn, err := grpc.Dial(emiroHost+":"+fmt.Sprint(emiroPort), grpc.WithInsecure())
 
 		if err != nil {
 			log.Fatalf("Could not connect to server: %s", err)
