@@ -59,6 +59,9 @@ to quickly create a Cobra application.`,
 		queryString := ""
 
 		if !all {
+			if len(args) != 1 {
+				log.Fatalf("Needs one argument or -a Parameter")
+			}
 			queryString = args[0]
 		}
 
@@ -75,9 +78,9 @@ to quickly create a Cobra application.`,
 		}
 
 		writer := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
-		fmt.Fprintln(writer, "Name\tDescription")
+		fmt.Fprintln(writer, "Name\tDescription\tLanguage\tPath\tInteractive\tScript")
 		for _, value := range response.QueryAnswers {
-			fmt.Fprintln(writer, value.Name+"\t"+value.Description)
+			fmt.Fprintln(writer, value.Name+"\t"+value.Description+"\t"+value.Language+"\t"+value.Path+"\t"+fmt.Sprint(value.Interactive)+"\t"+fmt.Sprint(value.Script))
 		}
 		writer.Flush()
 	},

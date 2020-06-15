@@ -45,6 +45,7 @@ func searchSpecificWithElastic(host string, port int, index string, insecure boo
 			Script:      value.Get("_source.script").Bool(),
 			Os:          parseStringArray(value.Get("_source.os")),
 			Path:        value.Get("_source.path").String(),
+			Interactive: value.Get("_source.interactive").Bool(),
 		}
 	}
 	return answer, nil
@@ -59,7 +60,7 @@ func parseStringArray(result gjson.Result) []string {
 	return returnValue
 }
 
-func searchQueryWithElastic(host string, port int, index string, insecure bool, query string, count int32, all bool) ([]*QueryAnswer, error) {
+func searchQueryWithElastic(host string, port int, index string, insecure bool, query string, count int32, all bool) ([]*Answer, error) {
 	elkQuery := `
 	{
 		"size": ` + fmt.Sprint(count) + `,
@@ -89,13 +90,19 @@ func searchQueryWithElastic(host string, port int, index string, insecure bool, 
 		return nil, errors.New("error at http Request:" + err.Error())
 	}
 
-	var answer []*QueryAnswer
+	var answer []*Answer
 	jsonData := gjson.ParseBytes(response).Get("hits.hits").Array()
 
 	for _, value := range jsonData {
-		entry := &QueryAnswer{
+		entry := &Answer{
 			Name:        value.Get("_source.name").String(),
 			Description: value.Get("_source.description").String(),
+			Command:     value.Get("_source.command").String(),
+			Language:    value.Get("_source.language").String(),
+			Script:      value.Get("_source.script").Bool(),
+			Os:          parseStringArray(value.Get("_source.os")),
+			Path:        value.Get("_source.path").String(),
+			Interactive: value.Get("_source.interactive").Bool(),
 		}
 		answer = append(answer, entry)
 	}

@@ -11,11 +11,6 @@ message QueryFull {
   bytes data = 1;
 }
 
-message QueryAnswer {
-  string name = 1;
-  string description = 2;
-  string language = 3;
-}
 
 message Answer {
   string name = 1;
@@ -29,7 +24,7 @@ message Answer {
 }
 
 message ResponseQueryAnswer {
-  repeated QueryAnswer queryAnswers  = 1;
+  repeated Answer queryAnswers  = 1;
 }
 
 message Response {
