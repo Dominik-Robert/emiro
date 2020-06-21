@@ -1,0 +1,8 @@
+{
+  "name": "No Script",
+  "description": "Interactive test",
+  "command": "sudo ls -la /root/",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": true
+}
