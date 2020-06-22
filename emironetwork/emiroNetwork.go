@@ -2,6 +2,7 @@ package emironetwork
 
 import (
 	"context"
+	"log"
 
 	"github.com/dominik-robert/emiro/config"
 )
@@ -21,11 +22,15 @@ func (s *Server) SendShow(ctx context.Context, query *Query) (*Answer, error) {
 
 func (s *Server) SendExec(ctx context.Context, query *Query) (*Answer, error) {
 	answer, err := searchSpecificWithElastic(config.Config.GetString("databaseHost"), config.Config.GetInt("databasePort"), config.Config.GetString("databaseIndex"), config.Config.GetBool("databaseInsecure"), query.Query, query.Count, query.All)
+
+	if query.RemoteHost != "" {
+		log.Println("Specified remote")
+	}
+
 	return answer, err
 }
 
 func (s *Server) SendNew(ctx context.Context, query *QueryFull) (*Response, error) {
 	answer, err := createNewWithElastic(config.Config.GetString("databaseHost"), config.Config.GetInt("databasePort"), config.Config.GetString("databaseIndex"), config.Config.GetBool("databaseInsecure"), query.Data)
-
 	return &Response{Succeed: answer}, err
 }

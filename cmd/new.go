@@ -87,6 +87,6 @@ func init() {
 	newCmd.Flags().BoolP("interactive", "i", false, "Help message for toggle")
 	newCmd.Flags().StringP("name", "n", "", "Help message for toggle")
 	newCmd.Flags().StringP("description", "d", "", "Help message for toggle")
-	newCmd.Flags().String("fromFile", "", "Help message for toggle")
+	newCmd.Flags().String("fromFile", "", "Specify a file that is used")
 
 }

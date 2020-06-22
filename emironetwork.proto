@@ -5,6 +5,7 @@ message Query {
   string query = 1;
   int32 count = 2;
   bool all = 3;
+  string remoteHost = 4;
 }
 
 message QueryFull {
@@ -22,6 +23,7 @@ message Answer {
   bool interactive = 7;
   repeated string os = 8;
   map<string, string> params = 9;
+  string remoteOutput = 10;
 }
 
 message ResponseQueryAnswer {

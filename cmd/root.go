@@ -61,14 +61,14 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().String("databaseHost", "localhost", "Binds the server on the specified Port")
-	rootCmd.PersistentFlags().Int("databasePort", 9200, "Binds the server on the specified Port")
-	rootCmd.PersistentFlags().String("databaseType", "localhost", "Binds the server on the specified Port")
-	rootCmd.PersistentFlags().String("databaseIndex", "emiro", "Binds the server on the specified Port")
-	rootCmd.PersistentFlags().Bool("databaseInsecure", false, "Binds the server on the specified Port")
+	rootCmd.PersistentFlags().String("databaseHost", "localhost", "Set the database host")
+	rootCmd.PersistentFlags().Int("databasePort", 9200, "Set database port")
+	rootCmd.PersistentFlags().String("databaseType", "elasticsearch", "Set the database Type ")
+	rootCmd.PersistentFlags().String("databaseIndex", "emiro", "Sets the index which are used")
+	rootCmd.PersistentFlags().Bool("databaseInsecure", false, "enable insecure database connection")
 	rootCmd.PersistentFlags().String("tempDir", "/tmp/emiro", "Specifies the tempDir")
-	rootCmd.PersistentFlags().String("emiroHost", "localhost", "Specifies the tempDir")
-	rootCmd.PersistentFlags().Int("emiroPort", 9000, "Specifies the tempDir")
+	rootCmd.PersistentFlags().String("emiroHost", "localhost", "specify the emiro host")
+	rootCmd.PersistentFlags().Int("emiroPort", 9000, "specify the emiro host port")
 	rootCmd.PersistentFlags().String("aliasFile", "$(HOME)/.profile", "Specify the aliasFile where the alias commands are stored to")
 
 	viper.BindPFlag("databaseHost", rootCmd.PersistentFlags().Lookup("databaseHost"))

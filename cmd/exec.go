@@ -44,7 +44,8 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Args: cobra.ExactArgs(1),
+	Args:    cobra.ExactArgs(1),
+	Aliases: []string{"run"},
 	Run: func(cmd *cobra.Command, args []string) {
 		aliasFlag, _ := cmd.Flags().GetString("alias")
 
@@ -110,10 +111,10 @@ to quickly create a Cobra application.`,
 			stdErr, errErr := cmd.StderrPipe()
 
 			if errOut != nil {
-				log.Fatalf("Cannot connect to commands stdOut: %s", err)
+				log.Fatalf("Cannot connect to commands stdOut: %s", errOut)
 			}
 			if errErr != nil {
-				log.Fatalf("Cannot connect to commands stdErr: %s", err)
+				log.Fatalf("Cannot connect to commands stdErr: %s", errErr)
 			}
 
 			cmd.Start()
