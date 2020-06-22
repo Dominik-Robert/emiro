@@ -69,6 +69,7 @@ func init() {
 	rootCmd.PersistentFlags().String("tempDir", "/tmp/emiro", "Specifies the tempDir")
 	rootCmd.PersistentFlags().String("emiroHost", "localhost", "Specifies the tempDir")
 	rootCmd.PersistentFlags().Int("emiroPort", 9000, "Specifies the tempDir")
+	rootCmd.PersistentFlags().String("aliasFile", "$(HOME)/.profile", "Specify the aliasFile where the alias commands are stored to")
 
 	viper.BindPFlag("databaseHost", rootCmd.PersistentFlags().Lookup("databaseHost"))
 	viper.BindPFlag("databasePort", rootCmd.PersistentFlags().Lookup("databasePort"))
@@ -78,6 +79,7 @@ func init() {
 	viper.BindPFlag("tempDir", rootCmd.PersistentFlags().Lookup("tempDir"))
 	viper.BindPFlag("emiroHost", rootCmd.PersistentFlags().Lookup("emiroHost"))
 	viper.BindPFlag("emiroPort", rootCmd.PersistentFlags().Lookup("emiroPort"))
+	viper.BindPFlag("aliasFile", rootCmd.PersistentFlags().Lookup("aliasFile"))
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $PWD/emiro.yaml)")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Activates the verbose output")

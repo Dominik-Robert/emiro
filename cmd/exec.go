@@ -23,9 +23,12 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 
+	"github.com/dominik-robert/emiro/alias"
 	"github.com/dominik-robert/emiro/emironetwork"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -43,6 +46,23 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		aliasFlag, _ := cmd.Flags().GetString("alias")
+
+		if aliasFlag != "" {
+			aliasFilePath := viper.GetString("aliasFile")
+			home, _ := homedir.Dir()
+			aliasFilePath = strings.ReplaceAll(aliasFilePath, "$(HOME)", home)
+			aliasFile := alias.NewAlias(aliasFilePath)
+
+			reg := regexp.MustCompile(" --alias \\w+")
+			programCall := reg.ReplaceAllLiteralString(strings.Join(os.Args, " "), "")
+			err := aliasFile.UpdateAliasFile(aliasFlag, programCall)
+
+			if err != nil {
+				log.Fatalf("Problem while adding alias: %s", err)
+			}
+		}
+
 		emiroHost := viper.GetString("emiroHost")
 		emiroPort := viper.GetInt("emiroPort")
 		verbose, _ := rootCmd.Flags().GetBool("verbose")
@@ -181,4 +201,5 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	execCmd.Flags().StringArrayP("param", "p", nil, "Specify a Parameter array to change the command")
+	execCmd.Flags().String("alias", "", "Specify if the command will create an alias in your system")
 }

@@ -1,8 +1,8 @@
 {
   "name": "No Script",
   "description": "Interactive test",
-  "command": "sudo ls -la /root/",
+  "command": "ls -la $HOME",
   "script": false,
   "path": "/bin/bash",
-  "interactive": true
+  "interactive": false
 }
