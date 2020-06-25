@@ -39,7 +39,8 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Args: cobra.ExactArgs(1),
+	Args:    cobra.ExactArgs(1),
+	Aliases: []string{"describe"},
 	Run: func(cmd *cobra.Command, args []string) {
 		emiroHost := viper.GetString("emiroHost")
 		emiroPort := viper.GetInt("emiroPort")
@@ -74,6 +75,7 @@ to quickly create a Cobra application.`,
 		}
 
 		writer := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
+		fmt.Fprintln(writer, "Name\t"+response.Id)
 		fmt.Fprintln(writer, "Name\t"+response.Name)
 		fmt.Fprintln(writer, "Description\t"+response.Description)
 		fmt.Fprintln(writer, "Command\t"+response.Command)

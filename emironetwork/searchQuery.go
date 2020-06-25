@@ -46,6 +46,7 @@ func searchSpecificWithElastic(host string, port int, index string, insecure boo
 			Path:        value.Get("_source.path").String(),
 			Interactive: value.Get("_source.interactive").Bool(),
 			Params:      parseMap(value.Get("_source.params")),
+			Id:          value.Get("_id").String(),
 		}
 	}
 	return answer, nil
@@ -136,6 +137,30 @@ func createNewWithElastic(host string, port int, index string, insecure bool, qu
 		return false, nil
 	}
 
+}
+
+func deleteWithElastic(host string, port int, index string, insecure bool, query string) (bool, error) {
+	elkQuery := `{
+		"query": {
+			"match": {
+				"name": "` + query + `"
+			}
+		}
+	}
+	`
+
+	body := bytes.NewBufferString(elkQuery)
+	response, err := DoCurl(host, port, "POST", index, "/_delete_by_query", insecure, body)
+
+	if err != nil {
+		return false, errors.New("error at http Request:" + err.Error())
+	}
+
+	if gjson.ParseBytes(response).Get("deleted").Int() >= 0 {
+		return true, nil
+	} else {
+		return false, nil
+	}
 }
 
 func DoCurl(host string, port int, method string, index string, additionalURL string, insecure bool, query io.Reader) ([]byte, error) {

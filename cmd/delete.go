@@ -19,19 +19,16 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
-	"text/tabwriter"
 
 	"github.com/dominik-robert/emiro/emironetwork"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
 	"google.golang.org/grpc"
 )
 
-// searchCmd represents the search command
-var searchCmd = &cobra.Command{
-	Use:   "search",
+// deleteCmd represents the delete command
+var deleteCmd = &cobra.Command{
+	Use:   "delete",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -39,15 +36,17 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	Args: cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-
 		all, _ := cmd.Flags().GetBool("all")
-		count, _ := cmd.Flags().GetInt32("count")
+
+		count := int32(1)
+		if all {
+			count = 100
+		}
+
 		emiroHost := viper.GetString("emiroHost")
 		emiroPort := viper.GetInt("emiroPort")
-
-		var conn *grpc.ClientConn
-
 		conn, err := grpc.Dial(emiroHost+":"+fmt.Sprint(emiroPort), grpc.WithInsecure())
 
 		if err != nil {
@@ -56,49 +55,32 @@ to quickly create a Cobra application.`,
 
 		c := emironetwork.NewEmiroClient(conn)
 
-		queryString := ""
-
-		if !all {
-			if len(args) != 1 {
-				log.Fatalf("Needs one argument or -a Parameter")
-			}
-			queryString = args[0]
-		}
-
 		query := emironetwork.Query{
-			Query: queryString,
+			Query: args[0],
 			All:   all,
 			Count: count,
 		}
 
-		response, err := c.SendQuery(context.Background(), &query)
+		response, err := c.SendDelete(context.Background(), &query)
 
-		if err != nil {
-			log.Fatalf("Error when calling SendQuery: %s", err)
+		if response.Succeed {
+			fmt.Println("Sucessfully deleted")
+		} else {
+			fmt.Println("An error occured while deleting")
 		}
-
-		writer := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
-		fmt.Fprintln(writer, "Name\tDescription\tLanguage\tPath\tInteractive\tScript")
-
-		for _, value := range response.QueryAnswers {
-			fmt.Fprintln(writer, value.Name+"\t"+value.Description+"\t"+value.Language+"\t"+value.Path+"\t"+fmt.Sprint(value.Interactive)+"\t"+fmt.Sprint(value.Script))
-		}
-		writer.Flush()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(searchCmd)
+	rootCmd.AddCommand(deleteCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// searchCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// deleteCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	searchCmd.Flags().BoolP("all", "a", false, "Shows all existing entries")
-	searchCmd.Flags().Int32P("count", "c", 10, "Sets the maximum count of entries")
+	deleteCmd.Flags().BoolP("all", "a", false, "Delete all Matching. If false deletes only the first matching")
 }

@@ -34,3 +34,8 @@ func (s *Server) SendNew(ctx context.Context, query *QueryFull) (*Response, erro
 	answer, err := createNewWithElastic(config.Config.GetString("databaseHost"), config.Config.GetInt("databasePort"), config.Config.GetString("databaseIndex"), config.Config.GetBool("databaseInsecure"), query.Data)
 	return &Response{Succeed: answer}, err
 }
+
+func (s *Server) SendDelete(ctx context.Context, query *Query) (*Response, error) {
+	answer, err := deleteWithElastic(config.Config.GetString("databaseHost"), config.Config.GetInt("databasePort"), config.Config.GetString("databaseIndex"), config.Config.GetBool("databaseInsecure"), query.Query)
+	return &Response{Succeed: answer}, err
+}

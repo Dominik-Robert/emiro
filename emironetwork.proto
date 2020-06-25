@@ -24,6 +24,7 @@ message Answer {
   repeated string os = 8;
   map<string, string> params = 9;
   string remoteOutput = 10;
+  string id = 11;
 }
 
 message ResponseQueryAnswer {
@@ -39,4 +40,5 @@ service Emiro {
   rpc sendShow(Query) returns (Answer) {}
   rpc sendExec(Query) returns (Answer) {}
   rpc sendNew(QueryFull) returns (Response) {}
+  rpc sendDelete(Query) returns (Response) {}
 }
