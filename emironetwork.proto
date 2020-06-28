@@ -33,6 +33,7 @@ message ResponseQueryAnswer {
 
 message Response {
   bool succeed = 1;
+  bytes data = 2;
 }
 
 service Emiro {
@@ -41,4 +42,6 @@ service Emiro {
   rpc sendExec(Query) returns (Answer) {}
   rpc sendNew(QueryFull) returns (Response) {}
   rpc sendDelete(Query) returns (Response) {}
+  rpc execRemote(Query) returns (stream Response) {}
+  rpc sendExecToRemote(Answer) returns (stream Response) {}
 }

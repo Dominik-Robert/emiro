@@ -1,7 +1,14 @@
 * [x] Support for alias generating
-* [ ] Save the script (local or with a shortcut idk)
+* [ ] Save the script local
 * [ ] edit
-* [ ] delete
+* [x] delete
+
+
+
+Remote command execution with key exchange for execution rights
+exec rights
+Save with an automated argument list then. 
+
 
 
 

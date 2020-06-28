@@ -48,6 +48,7 @@ to quickly create a Cobra application.`,
 	Aliases: []string{"run"},
 	Run: func(cmd *cobra.Command, args []string) {
 		aliasFlag, _ := cmd.Flags().GetString("alias")
+		remote, _ := cmd.Flags().GetString("remote")
 
 		if aliasFlag != "" {
 			aliasFilePath := viper.GetString("aliasFile")
@@ -79,9 +80,35 @@ to quickly create a Cobra application.`,
 		c := emironetwork.NewEmiroClient(conn)
 
 		query := emironetwork.Query{
-			Query: args[0],
-			All:   false,
-			Count: 1,
+			Query:      args[0],
+			All:        false,
+			Count:      1,
+			RemoteHost: remote,
+		}
+
+		if remote != "" {
+			streamResponse, err := c.ExecRemote(context.Background(), &query)
+			if err != nil {
+				log.Println(err)
+			}
+
+			responseTmp, err := streamResponse.Recv()
+
+			if err != nil {
+				log.Println(err)
+			}
+
+			for responseTmp.Succeed {
+				fmt.Println(responseTmp.Succeed)
+				fmt.Println(string(responseTmp.Data))
+				responseTmp, err = streamResponse.Recv()
+
+				if err != nil {
+					return
+				}
+			}
+
+			return
 		}
 
 		response, err := c.SendExec(context.Background(), &query)
@@ -203,4 +230,6 @@ func init() {
 	// is called directly, e.g.:
 	execCmd.Flags().StringArrayP("param", "p", nil, "Specify a Parameter array to change the command")
 	execCmd.Flags().String("alias", "", "Specify if the command will create an alias in your system")
+	execCmd.Flags().String("remote", "", "Specify the host where the command will run")
+
 }

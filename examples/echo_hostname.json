@@ -1,0 +1,8 @@
+{
+  "name": "echo Hostname",
+  "description": "Prints the Hostname of the machine",
+  "command": "echo $HOSTNAME",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": false
+}
