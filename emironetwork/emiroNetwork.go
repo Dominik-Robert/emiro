@@ -3,8 +3,10 @@ package emironetwork
 import (
 	"bufio"
 	"context"
+	"errors"
 	"log"
 	"os/exec"
+	"strings"
 
 	"github.com/dominik-robert/emiro/config"
 	"google.golang.org/grpc"
@@ -36,7 +38,27 @@ func (s *Server) SendDelete(ctx context.Context, query *Query) (*Response, error
 func (s *Server) SendExec(ctx context.Context, query *Query) (*Answer, error) {
 	answer, err := searchSpecificWithElastic(config.Config.GetString("databaseHost"), config.Config.GetInt("databasePort"), config.Config.GetString("databaseIndex"), config.Config.GetBool("databaseInsecure"), query.Query, query.Count, query.All)
 
+	if answer == nil {
+		return nil, errors.New("Found no entry in the database for given Query: " + query.Query)
+	}
+
+	for _, value := range query.Parameter {
+		key, value := splitKeyValue(value)
+		answer.Command = strings.ReplaceAll(answer.Command, key, value)
+	}
+	for key, value := range answer.Params {
+		answer.Command = strings.ReplaceAll(answer.Command, key, value)
+	}
+
+	answer.Command = query.Prepend + " " + answer.Command + " " + query.Append
+
 	return answer, err
+}
+
+func splitKeyValue(keyVal string) (key, value string) {
+	arr := strings.Split(keyVal, "=")
+
+	return arr[0], arr[1]
 }
 
 func (s *Server) SendExecToRemote(answer *Answer, stream Emiro_SendExecToRemoteServer) error {
@@ -86,6 +108,20 @@ func (s *Server) SendExecToRemote(answer *Answer, stream Emiro_SendExecToRemoteS
 
 func (s *Server) ExecRemote(query *Query, stream Emiro_ExecRemoteServer) error {
 	answer, err := searchSpecificWithElastic(config.Config.GetString("databaseHost"), config.Config.GetInt("databasePort"), config.Config.GetString("databaseIndex"), config.Config.GetBool("databaseInsecure"), query.Query, query.Count, query.All)
+
+	if answer == nil {
+		return errors.New("Found no entry in the database for given Query: " + query.Query)
+	}
+
+	for _, value := range query.Parameter {
+		key, value := splitKeyValue(value)
+		answer.Command = strings.ReplaceAll(answer.Command, key, value)
+	}
+	for key, value := range answer.Params {
+		answer.Command = strings.ReplaceAll(answer.Command, key, value)
+	}
+
+	answer.Command = query.Prepend + " " + answer.Command + " " + query.Append
 
 	var conn *grpc.ClientConn
 

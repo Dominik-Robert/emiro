@@ -49,6 +49,9 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		aliasFlag, _ := cmd.Flags().GetString("alias")
 		remote, _ := cmd.Flags().GetString("remote")
+		parameter, _ := cmd.Flags().GetStringArray("params")
+		appendVar, _ := cmd.Flags().GetString("append")
+		prependVar, _ := cmd.Flags().GetString("prepend")
 
 		if aliasFlag != "" {
 			aliasFilePath := viper.GetString("aliasFile")
@@ -84,6 +87,9 @@ to quickly create a Cobra application.`,
 			All:        false,
 			Count:      1,
 			RemoteHost: remote,
+			Parameter:  parameter,
+			Append:     appendVar,
+			Prepend:    prependVar,
 		}
 
 		if remote != "" {
@@ -99,7 +105,6 @@ to quickly create a Cobra application.`,
 			}
 
 			for responseTmp.Succeed {
-				fmt.Println(responseTmp.Succeed)
 				fmt.Println(string(responseTmp.Data))
 				responseTmp, err = streamResponse.Recv()
 
@@ -117,17 +122,8 @@ to quickly create a Cobra application.`,
 			log.Fatalf("Error when calling SendQuery: %s", err)
 		}
 
-		parameter, _ := cmd.Flags().GetStringArray("param")
-		for _, value := range parameter {
-			key, value := splitKeyValue(value)
-			response.Command = strings.ReplaceAll(response.Command, key, value)
-		}
-		for key, value := range response.Params {
-			response.Command = strings.ReplaceAll(response.Command, key, value)
-		}
-
 		if verbose {
-			log.Println("Running Command: ", response.Command)
+			log.Println("Running Command:", response.Command)
 		}
 
 		if !response.Script {
@@ -211,12 +207,6 @@ to quickly create a Cobra application.`,
 	},
 }
 
-func splitKeyValue(keyVal string) (key, value string) {
-	arr := strings.Split(keyVal, "=")
-
-	return arr[0], arr[1]
-}
-
 func init() {
 	rootCmd.AddCommand(execCmd)
 
@@ -231,5 +221,7 @@ func init() {
 	execCmd.Flags().StringArrayP("param", "p", nil, "Specify a Parameter array to change the command")
 	execCmd.Flags().String("alias", "", "Specify if the command will create an alias in your system")
 	execCmd.Flags().String("remote", "", "Specify the host where the command will run")
+	execCmd.Flags().String("append", "", "Append the argument after the command")
+	execCmd.Flags().String("prepend", "", "Prepend the argument before the command")
 
 }

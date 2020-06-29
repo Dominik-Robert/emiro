@@ -6,6 +6,9 @@ message Query {
   int32 count = 2;
   bool all = 3;
   string remoteHost = 4;
+  repeated string parameter = 5;
+  string append = 6;
+  string prepend = 7;
 }
 
 message QueryFull {
