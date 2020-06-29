@@ -15,8 +15,19 @@ limitations under the License.
 */
 package main
 
-import "github.com/dominik-robert/emiro/cmd"
+import (
+	"github.com/dominik-robert/emiro/cmd"
+)
 
 func main() {
+	/*
+		command := cmd.GetRootCMD()
+
+		err := doc.GenMarkdownTree(command, "doc/")
+		if err != nil {
+			log.Fatal(err)
+		}
+	*/
+
 	cmd.Execute()
 }

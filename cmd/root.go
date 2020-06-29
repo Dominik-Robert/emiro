@@ -126,3 +126,8 @@ func initConfig() {
 		}
 	}
 }
+
+// GetRootCMD Returns the cobra rootCMD for generating the documentation with cobra.
+func GetRootCMD() *cobra.Command {
+	return rootCmd
+}
