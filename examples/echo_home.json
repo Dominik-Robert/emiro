@@ -1,0 +1,8 @@
+{
+  "name": "echo Home dir",
+  "description": "Prints the Home dir of the machine",
+  "command": "echo $HOME",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": false
+}

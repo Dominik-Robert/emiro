@@ -1,0 +1,50 @@
+syntax = "proto3";
+package emironetwork;
+
+message Query {
+  string query = 1;
+  int32 count = 2;
+  bool all = 3;
+  string remoteHost = 4;
+  repeated string parameter = 5;
+  string append = 6;
+  string prepend = 7;
+}
+
+message QueryFull {
+  bytes data = 1;
+}
+
+
+message Answer {
+  string name = 1;
+  string description = 2;
+  string command = 3;
+  string language = 4;
+  string path = 5;
+  bool script = 6;
+  bool interactive = 7;
+  repeated string os = 8;
+  map<string, string> params = 9;
+  string remoteOutput = 10;
+  string id = 11;
+}
+
+message ResponseQueryAnswer {
+  repeated Answer queryAnswers  = 1;
+}
+
+message Response {
+  bool succeed = 1;
+  bytes data = 2;
+}
+
+service Emiro {
+  rpc sendQuery(Query) returns (ResponseQueryAnswer) {}
+  rpc sendShow(Query) returns (Answer) {}
+  rpc sendExec(Query) returns (Answer) {}
+  rpc sendNew(QueryFull) returns (Response) {}
+  rpc sendDelete(Query) returns (Response) {}
+  rpc execRemote(Query) returns (stream Response) {}
+  rpc sendExecToRemote(Answer) returns (stream Response) {}
+}

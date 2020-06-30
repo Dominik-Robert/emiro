@@ -1,0 +1,8 @@
+{
+  "name": "Delete windows omd-dev Worker",
+  "description": "Deletes all windows worker from omd-dev",
+  "command": "kubectl get pods -n=omd-worker | awk '{print $1}' | grep omd-dev-windows | xargs kubectl delete pod -n=omd-worker",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": false
+}

@@ -1,0 +1,9 @@
+{
+  "name": "sakuli RTEST",
+  "description": "Starts a Docker container for sakuli in RTEST environment",
+  "command": "docker run -v /opt/Anwendungen/sakuli/sakuli_client_cert.pfx:/client.pfx -it -p 6901:6901 -e SERVER_HOSTNAME=dojconn1 -e ENVIRONMENT=RTEST -e NODE_NAME=sma-docker1 -e SAKULI_ENCRYPTION_KEY=9CZ7gkKjIbjAFagqrpKHPQ== sma-gitlab:8443/kubernetes/docker-images/sakuli:v1.3.0-prod-0.3 bash",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": true,
+  "language": "bash"
+}

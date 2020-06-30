@@ -1,0 +1,13 @@
+{
+  "name": "kubectl",
+  "description": "The kubectl binary. Perfect to use for remote usage",
+  "command": "kubectl",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": false,
+  "language": "bash",
+  "os": [
+    "Linux",
+    "MacOS"
+  ]
+}
