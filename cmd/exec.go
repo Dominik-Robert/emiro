@@ -132,6 +132,7 @@ to quickly create a Cobra application.`,
 
 			stdout, errOut := cmd.StdoutPipe()
 			stdErr, errErr := cmd.StderrPipe()
+			cmd.Stdin = os.Stdin
 
 			if errOut != nil {
 				log.Fatalf("Cannot connect to commands stdOut: %s", errOut)

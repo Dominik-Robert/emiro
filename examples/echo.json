@@ -1,8 +1,0 @@
-{
-  "name": "No Script",
-  "description": "Interactive test",
-  "command": "ls -la $HOME",
-  "script": false,
-  "path": "/bin/bash",
-  "interactive": false
-}

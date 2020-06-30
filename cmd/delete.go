@@ -29,14 +29,16 @@ import (
 // deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Deletes no more needed commands",
+	Long: `Deletes all commands that are matching the specified argument. 
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Args: cobra.MaximumNArgs(1),
+Syntax be like:
+
+emiro delete "SSH"
+emiro delete "Mutliline String"
+
+This will delete all Commands that have the queries (SSH or "Multiline String") in the name.`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		all, _ := cmd.Flags().GetBool("all")
 

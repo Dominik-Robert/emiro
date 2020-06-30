@@ -1,0 +1,13 @@
+{
+  "name": "SSH",
+  "description": "Interactive test",
+  "command": "/usr/bin/ssh docker@sma-docker2 -C '/usr/bin/kubectl get pods'",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": true,
+  "language": "bash",
+  "os": [
+    "Linux",
+    "MacOS"
+  ]
+}

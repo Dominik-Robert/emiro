@@ -66,8 +66,8 @@ func init() {
 	rootCmd.PersistentFlags().String("databaseType", "elasticsearch", "Set the database Type ")
 	rootCmd.PersistentFlags().String("databaseIndex", "emiro", "Sets the index which are used")
 	rootCmd.PersistentFlags().Bool("databaseInsecure", false, "enable insecure database connection")
-	rootCmd.PersistentFlags().String("tempDir", "/tmp/emiro", "Specifies the tempDir")
-	rootCmd.PersistentFlags().String("emiroHost", "localhost", "specify the emiro host")
+	rootCmd.PersistentFlags().StringP("tempDir", "", "/tmp/emiro", "Specifies the tempDir")
+	rootCmd.PersistentFlags().StringP("emiroHost", "", "localhost", "specify the emiro host")
 	rootCmd.PersistentFlags().Int("emiroPort", 9000, "specify the emiro host port")
 	rootCmd.PersistentFlags().String("aliasFile", "$(HOME)/.profile", "Specify the aliasFile where the alias commands are stored to")
 
@@ -83,12 +83,6 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $PWD/emiro.yaml)")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Activates the verbose output")
-}
-
-func init() {
-	// Prepare tempDir
-	_ = os.Mkdir(viper.GetString("tempDir"), os.FileMode(0777))
-
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -108,7 +102,7 @@ func initConfig() {
 		viper.AddConfigPath("./")
 		viper.AddConfigPath(home)
 		viper.AddConfigPath("/etc/emiro/")
-		viper.SetConfigName("emiro")
+		viper.SetConfigName(".emiro")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
@@ -116,15 +110,19 @@ func initConfig() {
 	// If a config file is found, read it in.
 	// Output loaded config if verbose output is on
 	verbose, _ := rootCmd.Flags().GetBool("verbose")
+	err := viper.ReadInConfig()
 	if verbose {
-		err := viper.ReadInConfig()
-
 		if err == nil {
 			log.Println("Using config file:", viper.ConfigFileUsed())
 		} else {
 			log.Printf("Cannot find a config file: %s", err)
 		}
 	}
+}
+
+func init() {
+	// Prepare tempDir
+	_ = os.Mkdir(viper.GetString("tempDir"), os.FileMode(0777))
 }
 
 // GetRootCMD Returns the cobra rootCMD for generating the documentation with cobra.

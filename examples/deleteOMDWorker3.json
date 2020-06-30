@@ -1,0 +1,8 @@
+{
+  "name": "Delete db Worker",
+  "description": "Deletes all db  worker from prod",
+  "command": "kubectl get pods -n=omd-worker | awk '{print $1}' | grep prod-db | xargs kubectl delete pod -n=omd-worker",
+  "script": false,
+  "path": "/bin/bash",
+  "interactive": false
+}

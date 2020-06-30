@@ -39,8 +39,8 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	Aliases: []string{"list"},
 	Run: func(cmd *cobra.Command, args []string) {
-
 		all, _ := cmd.Flags().GetBool("all")
 		count, _ := cmd.Flags().GetInt32("count")
 		emiroHost := viper.GetString("emiroHost")
