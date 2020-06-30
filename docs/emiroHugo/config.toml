@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://dominik-robert.github.io/emiro/"
 languageCode = "en-us"
 theme = "terminal"
 paginate = 5
