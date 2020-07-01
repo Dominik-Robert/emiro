@@ -32,13 +32,24 @@ import (
 // showCmd represents the show command
 var showCmd = &cobra.Command{
 	Use:   "show",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Get detailed information about a command",
+	Long: `With show you can get a detailed view of an existing command.
+	
+	For example:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	emiro show Hostname
+
+	results in following output
+	
+	ID            hveX_3IB8mo66xNibt7z
+	Name          echo Hostname
+	Description   Prints the Hostname of the machine
+	Command       echo $HOSTNAME
+	Path          /bin/bash
+	Language      
+	OS            []
+	Script        false
+	Params				null`,
 	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"describe"},
 	Run: func(cmd *cobra.Command, args []string) {
@@ -75,7 +86,7 @@ to quickly create a Cobra application.`,
 		}
 
 		writer := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
-		fmt.Fprintln(writer, "Name\t"+response.Id)
+		fmt.Fprintln(writer, "ID\t"+response.Id)
 		fmt.Fprintln(writer, "Name\t"+response.Name)
 		fmt.Fprintln(writer, "Description\t"+response.Description)
 		fmt.Fprintln(writer, "Command\t"+response.Command)
@@ -83,9 +94,15 @@ to quickly create a Cobra application.`,
 		fmt.Fprintln(writer, "Language\t"+response.Language)
 		fmt.Fprintln(writer, "OS\t"+fmt.Sprint(response.Os))
 		fmt.Fprintln(writer, "Script\t"+fmt.Sprint(response.Script))
+		fmt.Fprintln(writer, "Params\t"+PrettyPrint(response.Params))
 
 		writer.Flush()
 	},
+}
+
+func PrettyPrint(v interface{}) string {
+	b, _ := json.MarshalIndent(v, "", "  ")
+	return string(b)
 }
 
 func init() {

@@ -32,16 +32,10 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "emiro",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Short: "Emiro - Search, find and execute shell snippets without leaving your terminal",
+	Long: `Emiro was build for the problem that you need to leave your terminal for every snippet you want to insert in your terminal. 
+	With Emiro you can search for specific snippets and execute them. 
+	If you don't have the needed dependencies you can even run it everywhere(where you ran emiro remote service is running.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
