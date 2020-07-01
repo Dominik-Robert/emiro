@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: ""
 author: "Dominik Robert"
 showFullContent: true
 draft: false

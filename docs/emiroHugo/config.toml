@@ -1,4 +1,5 @@
-baseURL = "https://dominik-robert.github.io/emiro/"
+# baseURL = "https://dominik-robert.github.io/emiro/"
+baseURL = "/"
 languageCode = "en-us"
 theme = "terminal"
 paginate = 5
