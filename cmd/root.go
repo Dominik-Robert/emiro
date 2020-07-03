@@ -29,6 +29,9 @@ import (
 
 var cfgFile string
 
+// VERSION shows the current version of the program
+var VERSION = "0.9.0"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "emiro",
