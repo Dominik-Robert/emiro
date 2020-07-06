@@ -44,7 +44,7 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Args:    cobra.ExactArgs(1),
+	Args:    cobra.MinimumNArgs(1),
 	Aliases: []string{"run"},
 	Run: func(cmd *cobra.Command, args []string) {
 		aliasFlag, _ := cmd.Flags().GetString("alias")
@@ -81,6 +81,10 @@ to quickly create a Cobra application.`,
 		}
 
 		c := emironetwork.NewEmiroClient(conn)
+
+		if len(args) > 1 {
+			appendVar = strings.Join(args[1:], " ") + " " + appendVar
+		}
 
 		query := emironetwork.Query{
 			Query:      args[0],
