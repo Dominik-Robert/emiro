@@ -28,6 +28,7 @@ message Answer {
   map<string, string> params = 9;
   string remoteOutput = 10;
   string id = 11;
+  string author = 12;
 }
 
 message ResponseQueryAnswer {

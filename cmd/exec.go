@@ -37,13 +37,20 @@ import (
 // execCmd represents the exec command
 var execCmd = &cobra.Command{
 	Use:   "exec",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Execute a snippet",
+	Long: `Executes a snippet from the terminal. You can write a query which results in one command (this will automatically executed) 
+	or you can refer to an id with --id where you don't have to write a more detailed query.
+	
+	For example:
+	
+	emiro exec "echo hostname"
+	
+	# Will execute the query and execute the resulting command.
+	
+	You can execute your snippet on a remote machine with --remote HOST:PORT.
+	
+	You can append or prepend arguments to your command with --prepend or --append, if you write more arguments than one (first is the query) 
+	then the others will automatically appended to the command.`,
 	Args:    cobra.MinimumNArgs(1),
 	Aliases: []string{"run"},
 	Run: func(cmd *cobra.Command, args []string) {
