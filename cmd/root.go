@@ -64,7 +64,7 @@ func init() {
 	rootCmd.PersistentFlags().String("databaseIndex", "emiro", "Sets the index which are used")
 	rootCmd.PersistentFlags().Bool("databaseInsecure", false, "enable insecure database connection")
 	rootCmd.PersistentFlags().StringP("tempDir", "", "/tmp/emiro", "Specifies the tempDir")
-	rootCmd.PersistentFlags().StringP("emiroHost", "", "localhost", "specify the emiro host")
+	rootCmd.PersistentFlags().StringP("emiroHost", "", "104.197.10.159", "specify the emiro host")
 	rootCmd.PersistentFlags().Int("emiroPort", 9000, "specify the emiro host port")
 	rootCmd.PersistentFlags().String("aliasFile", "$(HOME)/.profile", "Specify the aliasFile where the alias commands are stored to")
 	rootCmd.PersistentFlags().String("emiroServerHost", ":", "Specify the listening host for the server")

@@ -164,7 +164,7 @@ func deleteWithElastic(host string, port int, index string, insecure bool, query
 }
 
 func DoCurl(host string, port int, method string, index string, additionalURL string, insecure bool, query io.Reader) ([]byte, error) {
-	req, err := http.NewRequest(method, "http://"+host+":"+fmt.Sprint(port)+"/"+index+additionalURL, query)
+	req, err := http.NewRequest(method, host+":"+fmt.Sprint(port)+"/"+index+additionalURL, query)
 
 	if err != nil {
 		log.Println("Unable to create Request:" + err.Error())

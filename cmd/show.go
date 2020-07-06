@@ -91,6 +91,7 @@ var showCmd = &cobra.Command{
 		fmt.Fprintln(writer, "Description\t"+response.Description)
 		fmt.Fprintln(writer, "Command\t"+response.Command)
 		fmt.Fprintln(writer, "Path\t"+response.Path)
+		fmt.Fprintln(writer, "Author\t"+response.Author)
 		fmt.Fprintln(writer, "Language\t"+response.Language)
 		fmt.Fprintln(writer, "OS\t"+fmt.Sprint(response.Os))
 		fmt.Fprintln(writer, "Script\t"+fmt.Sprint(response.Script))
