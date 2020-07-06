@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -85,13 +86,30 @@ var searchCmd = &cobra.Command{
 			log.Fatalf("Error when calling SendQuery: %s", err)
 		}
 
+		outputFormat, _ := cmd.Flags().GetString("output")
 		writer := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
-		fmt.Fprintln(writer, "Name\tDescription\tLanguage\tPath\tInteractive\tScript")
 
-		for _, value := range response.QueryAnswers {
-			fmt.Fprintln(writer, value.Name+"\t"+value.Description+"\t"+value.Language+"\t"+value.Path+"\t"+fmt.Sprint(value.Interactive)+"\t"+fmt.Sprint(value.Script))
+		switch outputFormat {
+		case "short":
+			fmt.Fprintln(writer, "Name\tAuthor\tDescription\tCommand")
+
+			for _, value := range response.QueryAnswers {
+				fmt.Fprintln(writer, value.Name+"\t"+value.Author+"\t"+value.Description+"\t"+value.Command)
+			}
+		case "wide":
+			fmt.Fprintln(writer, "Name\tAuthor\tDescription\tLanguage\tPath\tInteractive\tScript\tCommand")
+			for _, value := range response.QueryAnswers {
+				fmt.Fprintln(writer, value.Name+"\t"+value.Author+"\t"+value.Description+"\t"+value.Language+"\t"+value.Path+"\t"+fmt.Sprint(value.Interactive)+"\t"+fmt.Sprint(value.Script)+"\t"+value.Command)
+			}
+		case "json":
+			jsonData, _ := json.MarshalIndent(response, "", "\t")
+			fmt.Println(string(jsonData))
+		default:
+			fmt.Println("Undefined output")
 		}
+
 		writer.Flush()
+
 	},
 }
 
@@ -109,4 +127,5 @@ func init() {
 	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	searchCmd.Flags().BoolP("all", "a", false, "Shows all existing entries")
 	searchCmd.Flags().Int32P("count", "c", 10, "Sets the maximum count of entries")
+	searchCmd.Flags().StringP("output", "o", "short", "Set the output format. Options are: short, wide, json")
 }
