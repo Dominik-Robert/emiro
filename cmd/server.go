@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -30,19 +31,21 @@ var serverCmd = &cobra.Command{
 	Use:   "server",
 	Short: "Starts an emiro server",
 	Long: `With server you simply start a new emiro server where you can connect from your client.
-	
-	Example:
-	
-	emiro server`,
+Example:
+
+emiro server
+
+You can change the database connection with a config file or parameter. You can even change the listening port for the server with --emiroServerHost and --emiroServerPort `,
 	Run: func(cmd *cobra.Command, args []string) {
 		emironetwork.DoCurl(viper.GetString("databaseHost"), viper.GetInt("databasePort"), "PUT", viper.GetString("databaseIndex"), "", viper.GetBool("databaseInsecure"), nil)
-
-		lis, err := net.Listen("tcp", ":9000")
+		emiroHost, _ := rootCmd.Flags().GetString("emiroServerHost")
+		emiroPort, _ := rootCmd.Flags().GetInt("emiroServerPort")
+		lis, err := net.Listen("tcp", emiroHost+fmt.Sprint(emiroPort))
 
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("Started Server on Port 9000")
+		log.Println("Started Server on Port " + fmt.Sprint(emiroPort))
 
 		s := emironetwork.Server{}
 

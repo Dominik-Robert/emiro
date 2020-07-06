@@ -32,32 +32,32 @@ var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Creates a new Command",
 	Long: `New creates a new command. Actually the only option is to import the new command from a json file. 
-	Specify it within an editor or per Line from the tool is on the roadmap.
-	
-	Usage:
-	
-	emiro new --fromFile YOUR_FILE.json
-	
-	Possible fields in the json-File:
+Specify it within an editor or per Line from the tool is on the roadmap.
+
+Usage:
+
+emiro new --fromFile YOUR_FILE.json
+
+Possible fields in the json-File:
 
 
-	name: string - Specify the command name. This will you type in for identify the command (or the id)
+name: string - Specify the command name. This will you type in for identify the command (or the id)
 
-	description: string - A more detailed description
+description: string - A more detailed description
 
-	command: string - The Command, can also be multilined for a script
+command: string - The Command, can also be multilined for a script
 
-	language: string - To identify the language the command was written in
+language: string - To identify the language the command was written in
 
-	path: string -  The path from where you will execture. For example /bin/bash
+path: string -  The path from where you will execture. For example /bin/bash
 
-	script: bool - If the command is a complete script or not
+script: bool - If the command is a complete script or not
 
-	interactive: bool - Will you need to have a user input. No neccessary, but will improve the information for the user
+interactive: bool - Will you need to have a user input. No neccessary, but will improve the information for the user
 
-	os: []string - The operating-system where the command can be running
+os: []string - The operating-system where the command can be running
 
-	params: map[string][string] - The parameter which you want to have as a default.
+params: map[string][string] - The parameter which you want to have as a default.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		emiroHost := viper.GetString("emiroHost")

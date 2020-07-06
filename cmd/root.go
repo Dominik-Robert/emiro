@@ -37,8 +37,8 @@ var rootCmd = &cobra.Command{
 	Use:   "emiro",
 	Short: "Emiro - Search, find and execute shell snippets without leaving your terminal",
 	Long: `Emiro was build for the problem that you need to leave your terminal for every snippet you want to insert in your terminal. 
-	With Emiro you can search for specific snippets and execute them. 
-	If you don't have the needed dependencies you can even run it everywhere(where you ran emiro remote service is running.`,
+With Emiro you can search for specific snippets and execute them. 
+If you don't have the needed dependencies you can even run it everywhere(where you ran emiro remote service is running.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -67,6 +67,8 @@ func init() {
 	rootCmd.PersistentFlags().StringP("emiroHost", "", "localhost", "specify the emiro host")
 	rootCmd.PersistentFlags().Int("emiroPort", 9000, "specify the emiro host port")
 	rootCmd.PersistentFlags().String("aliasFile", "$(HOME)/.profile", "Specify the aliasFile where the alias commands are stored to")
+	rootCmd.PersistentFlags().String("emiroServerHost", ":", "Specify the listening host for the server")
+	rootCmd.PersistentFlags().Int("emiroServerPort", 9000, "Specify the listening port for the server")
 
 	viper.BindPFlag("databaseHost", rootCmd.PersistentFlags().Lookup("databaseHost"))
 	viper.BindPFlag("databasePort", rootCmd.PersistentFlags().Lookup("databasePort"))
@@ -77,6 +79,8 @@ func init() {
 	viper.BindPFlag("emiroHost", rootCmd.PersistentFlags().Lookup("emiroHost"))
 	viper.BindPFlag("emiroPort", rootCmd.PersistentFlags().Lookup("emiroPort"))
 	viper.BindPFlag("aliasFile", rootCmd.PersistentFlags().Lookup("aliasFile"))
+	viper.BindPFlag("emiroServerHost", rootCmd.PersistentFlags().Lookup("emiroServerHost"))
+	viper.BindPFlag("emiroServerPort", rootCmd.PersistentFlags().Lookup("emiroServerPort"))
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $PWD/emiro.yaml)")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Activates the verbose output")

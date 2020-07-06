@@ -34,9 +34,9 @@ var remoteCmd = &cobra.Command{
 	Use:   "remote",
 	Short: "Runs a remote server",
 	Long: `A remote server is needed when you want to execute a command on a different machine than localhost.
-	You can do it with:
-	
-	emiro remote`,
+You can do it with:
+
+emiro remote`,
 	Run: func(cmd *cobra.Command, args []string) {
 		emironetwork.DoCurl(viper.GetString("databaseHost"), viper.GetInt("databasePort"), "PUT", viper.GetString("databaseIndex"), "", viper.GetBool("databaseInsecure"), nil)
 

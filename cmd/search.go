@@ -35,19 +35,17 @@ var searchCmd = &cobra.Command{
 	Use:   "search",
 	Short: "Search and List the available command",
 	Long: `With search you can search to all the existing commands. You can search for a specific command or list all commands. An alias for search is list
-	
-	Examples:
-	
-	# List all existing commands. 
-	emiro search -a 
 
-	# List two existings commands
-	emiro search -a -c 2 
+Examples:
 
-	# List the first 5 commands that match the "kubernetes" query
-	emiro search kubernetes -c 5
-	
-	`,
+# List all existing commands. 
+emiro search -a 
+
+# List two existings commands
+emiro search -a -c 2 
+
+# List the first 5 commands that match the "kubernetes" query
+emiro search kubernetes -c 5`,
 	Aliases: []string{"list"},
 	Run: func(cmd *cobra.Command, args []string) {
 		all, _ := cmd.Flags().GetBool("all")
