@@ -88,6 +88,21 @@ emiro search kubernetes -c 5`,
 		writer := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
 
 		switch outputFormat {
+		case "detailed":
+			for _, value := range response.QueryAnswers {
+				fmt.Fprintln(writer, "ID\t"+value.Id)
+				fmt.Fprintln(writer, "Name\t"+value.Name)
+				fmt.Fprintln(writer, "Description\t"+value.Description)
+				fmt.Fprintln(writer, "Command\t"+value.Command)
+				fmt.Fprintln(writer, "Path\t"+value.Path)
+				fmt.Fprintln(writer, "Language\t"+value.Language)
+				fmt.Fprintln(writer, "OS\t"+fmt.Sprint(value.Os))
+				fmt.Fprintln(writer, "Script\t"+fmt.Sprint(value.Script))
+				fmt.Fprintln(writer, "Params\t"+PrettyPrint(value.Params))
+				fmt.Fprintln(writer, "-------------")
+
+				writer.Flush()
+			}
 		case "short":
 			fmt.Fprintln(writer, "Name\tAuthor\tDescription\tCommand")
 
@@ -125,5 +140,5 @@ func init() {
 	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	searchCmd.Flags().BoolP("all", "a", false, "Shows all existing entries")
 	searchCmd.Flags().Int32P("count", "c", 10, "Sets the maximum count of entries")
-	searchCmd.Flags().StringP("output", "o", "short", "Set the output format. Options are: short, wide, json")
+	searchCmd.Flags().StringP("output", "o", "short", "Set the output format. Options are: short, wide, json, detailed")
 }
