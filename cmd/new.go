@@ -74,7 +74,11 @@ params: map[string][string] - The parameter which you want to have as a default.
 
 		if fromFile != "" {
 			// Load all from a file
-			fileData, _ := ioutil.ReadFile(fromFile)
+			fileData, err := ioutil.ReadFile(fromFile)
+
+			if err != nil {
+				log.Fatalf("Could not read file: %s", err)
+			}
 
 			query := emironetwork.QueryFull{
 				Data: fileData,

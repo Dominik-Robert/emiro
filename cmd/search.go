@@ -99,6 +99,8 @@ emiro search kubernetes -c 5`,
 				fmt.Fprintln(writer, "OS\t"+fmt.Sprint(value.Os))
 				fmt.Fprintln(writer, "Script\t"+fmt.Sprint(value.Script))
 				fmt.Fprintln(writer, "Params\t"+PrettyPrint(value.Params))
+				fmt.Fprintln(writer, "Author\t"+value.Author)
+
 				fmt.Fprintln(writer, "-------------")
 
 				writer.Flush()

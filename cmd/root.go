@@ -58,7 +58,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().String("databaseHost", "localhost", "Set the database host")
+	rootCmd.PersistentFlags().String("databaseHost", "http://localhost", "Set the database host")
 	rootCmd.PersistentFlags().Int("databasePort", 9200, "Set database port")
 	rootCmd.PersistentFlags().String("databaseType", "elasticsearch", "Set the database Type ")
 	rootCmd.PersistentFlags().String("databaseIndex", "emiro", "Sets the index which are used")
