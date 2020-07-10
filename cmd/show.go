@@ -60,7 +60,7 @@ var showCmd = &cobra.Command{
 		var conn *grpc.ClientConn
 
 		conn, err := grpc.Dial(emiroHost+":"+fmt.Sprint(emiroPort), grpc.WithInsecure())
-
+		defer conn.Close()
 		if err != nil {
 			log.Fatalf("Could not connect to server: %s", err)
 		}

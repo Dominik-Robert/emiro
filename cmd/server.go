@@ -41,6 +41,7 @@ You can change the database connection with a config file or parameter. You can 
 		emiroHost, _ := rootCmd.Flags().GetString("emiroServerHost")
 		emiroPort, _ := rootCmd.Flags().GetInt("emiroServerPort")
 		lis, err := net.Listen("tcp", emiroHost+fmt.Sprint(emiroPort))
+		defer lis.Close()
 
 		if err != nil {
 			log.Fatal(err)

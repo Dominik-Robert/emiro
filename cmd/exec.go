@@ -56,7 +56,7 @@ then the others will automatically appended to the command.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		aliasFlag, _ := cmd.Flags().GetString("alias")
 		remote, _ := cmd.Flags().GetString("remote")
-		parameter, _ := cmd.Flags().GetStringArray("params")
+		parameter, _ := cmd.Flags().GetStringArray("param")
 		appendVar, _ := cmd.Flags().GetString("append")
 		prependVar, _ := cmd.Flags().GetString("prepend")
 
@@ -82,7 +82,7 @@ then the others will automatically appended to the command.`,
 		var conn *grpc.ClientConn
 
 		conn, err := grpc.Dial(emiroHost+":"+fmt.Sprint(emiroPort), grpc.WithInsecure())
-
+		defer conn.Close()
 		if err != nil {
 			log.Fatalf("Could not connect to server: %s", err)
 		}
@@ -146,27 +146,31 @@ then the others will automatically appended to the command.`,
 			cmd.Stdin = os.Stdin
 
 			if errOut != nil {
-				log.Fatalf("Cannot connect to commands stdOut: %s", errOut)
+				log.Fatalf("Cannot connect to commands stdOut: %s", err)
 			}
 			if errErr != nil {
-				log.Fatalf("Cannot connect to commands stdErr: %s", errErr)
+				log.Fatalf("Cannot connect to commands stdErr: %s", err)
 			}
 
 			cmd.Start()
 
 			go func() {
-				scannerErr := bufio.NewScanner(stdErr)
-				for scannerErr.Scan() {
-					m := scannerErr.Text()
-					fmt.Println(m)
+				buf := bufio.NewReader(stdErr) // Notice that this is not in a loop
+				for {
+					line, _, _ := buf.ReadRune()
+					fmt.Print(string(line))
 				}
 			}()
 
-			scannerOut := bufio.NewScanner(stdout)
-			for scannerOut.Scan() {
-				m := scannerOut.Text()
-				fmt.Println(m)
-			}
+			go func() {
+				buf := bufio.NewReader(stdout) // Notice that this is not in a loop
+				for {
+					line, _, _ := buf.ReadRune()
+					fmt.Print(string(line))
+				}
+			}()
+
+			cmd.Start()
 			cmd.Wait()
 
 		} else {

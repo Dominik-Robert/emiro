@@ -41,7 +41,7 @@ emiro remote`,
 		emironetwork.DoCurl(viper.GetString("databaseHost"), viper.GetInt("databasePort"), "PUT", viper.GetString("databaseIndex"), "", viper.GetBool("databaseInsecure"), nil)
 
 		lis, err := net.Listen("tcp", ":9001")
-
+		defer lis.Close()
 		if err != nil {
 			log.Fatal(err)
 		}

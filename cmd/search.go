@@ -52,13 +52,17 @@ emiro search kubernetes -c 5`,
 		count, _ := cmd.Flags().GetInt32("count")
 		emiroHost := viper.GetString("emiroHost")
 		emiroPort := viper.GetInt("emiroPort")
-
+		verbose, _ := cmd.Flags().GetBool("verbose")
 		var conn *grpc.ClientConn
 
 		conn, err := grpc.Dial(emiroHost+":"+fmt.Sprint(emiroPort), grpc.WithInsecure())
+		defer conn.Close()
 
 		if err != nil {
 			log.Fatalf("Could not connect to server: %s", err)
+		}
+		if verbose {
+			log.Println("Connect to", emiroHost+":"+fmt.Sprint(emiroPort))
 		}
 
 		c := emironetwork.NewEmiroClient(conn)

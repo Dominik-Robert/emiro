@@ -63,7 +63,7 @@ params: map[string][string] - The parameter which you want to have as a default.
 		emiroHost := viper.GetString("emiroHost")
 		emiroPort := viper.GetInt("emiroPort")
 		conn, err := grpc.Dial(emiroHost+":"+fmt.Sprint(emiroPort), grpc.WithInsecure())
-
+		defer conn.Close()
 		if err != nil {
 			log.Fatalf("Could not connect to server: %s", err)
 		}

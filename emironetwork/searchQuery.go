@@ -47,6 +47,7 @@ func searchSpecificWithElastic(host string, port int, index string, insecure boo
 			Interactive: value.Get("_source.interactive").Bool(),
 			Params:      parseMap(value.Get("_source.params")),
 			Id:          value.Get("_id").String(),
+			Author:      value.Get("_source.author").String(),
 		}
 	}
 	return answer, nil
@@ -114,6 +115,7 @@ func searchQueryWithElastic(host string, port int, index string, insecure bool, 
 			Path:        value.Get("_source.path").String(),
 			Interactive: value.Get("_source.interactive").Bool(),
 			Author:      value.Get("_source.author").String(),
+			Params:      parseMap(value.Get("_source.params")),
 		}
 		answer = append(answer, entry)
 	}
