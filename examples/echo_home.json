@@ -2,7 +2,10 @@
   "name": "echo Home dir",
   "description": "Prints the Home dir of the machine",
   "command": "echo $HOME",
-  "script": false,
+  "language": "bash",
   "path": "/bin/bash",
-  "interactive": false
+  "script": false,
+  "interactive": false,
+  "os": ["linux", "osx"],
+  "author": "Dominik Robert"
 }

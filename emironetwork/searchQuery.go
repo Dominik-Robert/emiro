@@ -113,6 +113,7 @@ func searchQueryWithElastic(host string, port int, index string, insecure bool, 
 			Os:          parseStringArray(value.Get("_source.os")),
 			Path:        value.Get("_source.path").String(),
 			Interactive: value.Get("_source.interactive").Bool(),
+			Author:      value.Get("_source.author").String(),
 		}
 		answer = append(answer, entry)
 	}

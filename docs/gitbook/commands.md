@@ -3,7 +3,6 @@ The emiro CLI has many arguments you can pass in. Here I will show you all argum
 
 ## search
 
-
 ## exec
 
 ## new
