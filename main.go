@@ -23,7 +23,7 @@ func main() {
 	/*
 		command := cmd.GetRootCMD()
 
-		err := doc.GenMarkdownTree(command, "doc/")
+		err := doc.GenMarkdownTree(command, "generatedDoc/")
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -139,7 +139,12 @@ then the others will automatically appended to the command.`,
 
 		if !response.Script {
 			// Is no script. So execute it directly
-			cmd := exec.Command(response.Path, "-c", response.Command)
+			bashRunCommand := "-c"
+
+			if response.Os[0] == "Windows" {
+				bashRunCommand = "/C"
+			}
+			cmd := exec.Command(response.Path, bashRunCommand, response.Command)
 
 			stdout, errOut := cmd.StdoutPipe()
 			stdErr, errErr := cmd.StderrPipe()

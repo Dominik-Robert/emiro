@@ -1,36 +1,24 @@
-## emiro show
+## emiro version
 
-Get detailed information about a command
+Prints the current version
 
 ### Synopsis
 
-With show you can get a detailed view of an existing command.
-	
-	For example:
+Prints the current version. For Example
+emiro version 
 
-	emiro show Hostname
+will print
+Version 0.9.0
 
-	results in following output
-	
-	ID            hveX_3IB8mo66xNibt7z
-	Name          echo Hostname
-	Description   Prints the Hostname of the machine
-	Command       echo $HOSTNAME
-	Path          /bin/bash
-	Language      
-	OS            []
-	Script        false
-	Params				null
 
 ```
-emiro show [flags]
+emiro version [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help    help for show
-  -p, --plain   Shows the result in plain json
+  -h, --help   help for version
 ```
 
 ### Options inherited from parent commands

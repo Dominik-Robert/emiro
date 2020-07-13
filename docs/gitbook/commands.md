@@ -1,15 +1,183 @@
 # Available Arguments
 The emiro CLI has many arguments you can pass in. Here I will show you all arguments with examples and all available parameters
 
+
 ## search
+Search is one of the important features. With search you can query against all saved commands on a server and get a detailed list of all commands or the commands that match your query.
+
+### Usage
+emiro search QUERY [flags] | emiro search -a [flags]
+
+
+### Examples
+
+```bash
+# Query against all
+emiro search -a
+
+# Query against all that match the QUERY without whitespaces:
+emiro search QUERY
+
+# Query against all that match the QUERY with whitespaces:
+emiro search "MY QUERY"
+
+# Limit the output of the search command
+```
+
+
+### Options
+```
+  -a, --all             Shows all existing entries
+  -c, --count int32     Sets the maximum count of entries (default 10)
+  -h, --help            help for search
+  -o, --output string   Set the output format. Options are: short, wide, json, detailed (default "short")
+```
+
+### Options inherited from parent commands
+```
+      --aliasFile string         Specify the aliasFile where the alias commands are stored to (default "$(HOME)/.profile")
+      --config string            config file (default is $PWD/emiro.yaml)
+      --databaseHost string      Set the database host (default "http://localhost")
+      --databaseIndex string     Sets the index which are used (default "emiro")
+      --databaseInsecure         enable insecure database connection
+      --databasePort int         Set database port (default 9200)
+      --databaseType string      Set the database Type  (default "elasticsearch")
+      --emiroHost string         specify the emiro host (default "104.197.10.159")
+      --emiroPort int            specify the emiro host port (default 9000)
+      --emiroServerHost string   Specify the listening host for the server (default ":")
+      --emiroServerPort int      Specify the listening port for the server (default 9000)
+      --tempDir string           Specifies the tempDir (default "/tmp/emiro")
+  -v, --verbose                  Activates the verbose output
+```
+
 
 ## exec
+Executes a snippet from the terminal. You can write a query which results in one command (this will automatically executed) 
+or you can refer to an id with --id where you don't have to write a more detailed query.
+
+### Usage
+emiro exec [flags]
+
+
+### Examples
+
+
+### Options
+
+```
+      --alias string        Specify if the command will create an alias in your system
+      --append string       Append the argument after the command
+  -h, --help                help for exec
+  -p, --param stringArray   Specify a Parameter array to change the command
+      --prepend string      Prepend the argument before the command
+      --remote string       Specify the host where the command will run
+```
+
+
+### Options inherited from parent commands
+```
+  --aliasFile string         Specify the aliasFile where the alias commands are stored to (default "$(HOME)/.profile")
+  --config string            config file (default is $PWD/emiro.yaml)
+  --databaseHost string      Set the database host (default "http://localhost")
+  --databaseIndex string     Sets the index which are used (default "emiro")
+  --databaseInsecure         enable insecure database connection
+  --databasePort int         Set database port (default 9200)
+  --databaseType string      Set the database Type  (default "elasticsearch")
+  --emiroHost string         specify the emiro host (default "104.197.10.159")
+  --emiroPort int            specify the emiro host port (default 9000)
+  --emiroServerHost string   Specify the listening host for the server (default ":")
+  --emiroServerPort int      Specify the listening port for the server (default 9000)
+  --tempDir string           Specifies the tempDir (default "/tmp/emiro")
+  -v, --verbose                  Activates the verbose output
+```
 
 ## new
+New creates a new command. Actually the only option is to import the new command from a json file. 
+Specify it within an editor or per Line from the tool is on the roadmap.
+
+### Usage
+emiro new --fromFile YOUR_FILE.json
+
+### Examples
+
+### Options
+
+```
+  -d, --description string   Help message for toggle
+      --fromFile string      Specify a file that is used
+  -h, --help                 help for new
+  -i, --interactive          Help message for toggle
+  -n, --name string          Help message for toggle
+```
+
+### Options inherited from parent commands
+
+```
+      --aliasFile string         Specify the aliasFile where the alias commands are stored to (default "$(HOME)/.profile")
+      --config string            config file (default is $PWD/emiro.yaml)
+      --databaseHost string      Set the database host (default "http://localhost")
+      --databaseIndex string     Sets the index which are used (default "emiro")
+      --databaseInsecure         enable insecure database connection
+      --databasePort int         Set database port (default 9200)
+      --databaseType string      Set the database Type  (default "elasticsearch")
+      --emiroHost string         specify the emiro host (default "104.197.10.159")
+      --emiroPort int            specify the emiro host port (default 9000)
+      --emiroServerHost string   Specify the listening host for the server (default ":")
+      --emiroServerPort int      Specify the listening port for the server (default 9000)
+      --tempDir string           Specifies the tempDir (default "/tmp/emiro")
+  -v, --verbose                  Activates the verbose output
+```
 
 ## show
+Get detailed information about a command
+
+### Usage
+emiro show QUERY [flags]
+
+
+### Examples
+```bash
+	emiro show Hostname
+
+	# results in following output
+	
+	ID            hveX_3IB8mo66xNibt7z
+	Name          echo Hostname
+	Description   Prints the Hostname of the machine
+	Command       echo $HOSTNAME
+	Path          /bin/bash
+	Language      
+	OS            []
+	Script        false
+	Params				null
+```
+### Options
+
+```
+  -h, --help    help for show
+  -p, --plain   Shows the result in plain json
+```
+
+### Options inherited from parent commands
+
+```
+      --aliasFile string         Specify the aliasFile where the alias commands are stored to (default "$(HOME)/.profile")
+      --config string            config file (default is $PWD/emiro.yaml)
+      --databaseHost string      Set the database host (default "http://localhost")
+      --databaseIndex string     Sets the index which are used (default "emiro")
+      --databaseInsecure         enable insecure database connection
+      --databasePort int         Set database port (default 9200)
+      --databaseType string      Set the database Type  (default "elasticsearch")
+      --emiroHost string         specify the emiro host (default "104.197.10.159")
+      --emiroPort int            specify the emiro host port (default 9000)
+      --emiroServerHost string   Specify the listening host for the server (default ":")
+      --emiroServerPort int      Specify the listening port for the server (default 9000)
+      --tempDir string           Specifies the tempDir (default "/tmp/emiro")
+  -v, --verbose                  Activates the verbose output
+```
 
 ## delete
+
 
 ## server
 
