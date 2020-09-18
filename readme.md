@@ -8,7 +8,7 @@ A complete and more detailed documentation is on:
 
 ## Install 
 
-Before emiro is not available in the package manager you have to download it here from the release page.
+Before emiro is available in the package manager you have to download it here from the release page.
 [Emiro Release Page](https://github.com/Dominik-Robert/emiro/releases/tag/) and click on the current version then Download for your OS
 
 
