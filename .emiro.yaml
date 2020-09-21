@@ -1,0 +1,9 @@
+emiroHost: 127.0.0.1
+remote:
+  permanentRemote: 10.18.190.56
+  allowIPs:
+    - 10.0.2.56
+    - 127.0.0.1
+  allowRange:
+    - from: 10.0.2.58
+      till: 10.0.2.60

@@ -17,11 +17,13 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/dominik-robert/emiro/config"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v2"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -86,6 +88,10 @@ func init() {
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Activates the verbose output")
 }
 
+func init() {
+
+}
+
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
@@ -115,9 +121,21 @@ func initConfig() {
 	if verbose {
 		if err == nil {
 			log.Println("Using config file:", viper.ConfigFileUsed())
+			cfgFile = viper.ConfigFileUsed()
 		} else {
 			log.Printf("Cannot find a config file: %s", err)
 		}
+	}
+
+	data, err := ioutil.ReadFile(viper.ConfigFileUsed())
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = yaml.Unmarshal(data, &config.CfgStruct)
+
+	if err != nil {
+		log.Println(err)
 	}
 }
 

@@ -9,7 +9,9 @@ import (
 	"strings"
 
 	"github.com/dominik-robert/emiro/config"
+	"github.com/dominik-robert/emiro/helper"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/peer"
 )
 
 type Server struct {
@@ -107,6 +109,12 @@ func (s *Server) SendExecToRemote(answer *Answer, stream Emiro_SendExecToRemoteS
 }
 
 func (s *Server) ExecRemote(query *Query, stream Emiro_ExecRemoteServer) error {
+	p, _ := peer.FromContext(stream.Context())
+
+	if !helper.SearchForIP(config.CfgStruct.Remote.AllowIPs, strings.Split(p.Addr.String(), ":")[0]) {
+		return errors.New("Blocked from Server. IP-Adress is not valid")
+	}
+
 	answer, err := searchSpecificWithElastic(config.Config.GetString("databaseHost"), config.Config.GetInt("databasePort"), config.Config.GetString("databaseIndex"), config.Config.GetBool("databaseInsecure"), query.Query, query.Count, query.All)
 
 	if answer == nil {
