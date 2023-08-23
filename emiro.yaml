@@ -1,0 +1,7 @@
+remoteServer:
+  - 127.0.0.1:9000
+  - 120.0.0.1:9001
+  - 120.0.0.1:9002
+server:
+  port: 9005
+emiroServerPort: 9005
